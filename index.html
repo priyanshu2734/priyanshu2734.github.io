@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priyanshu Sarkar — AI / Software Development Intern</title>
+<meta name="description" content="Priyanshu Sarkar — 2nd year student at KIIT Bhubaneswar. Python, applied AI, prompt engineering. Seeking an internship.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%2313111C%22/><text x=%2250%22 y=%2266%22 font-size=%2250%22 text-anchor=%22middle%22 fill=%22%23E3B04B%22 font-family=%22monospace%22>P</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-base:#13111c;
+    --bg-panel:#1c1926;
+    --bg-panel-alt:#221e30;
+    --accent-gold:#e3b04b;
+    --accent-gold-dim:#a5813a;
+    --accent-cyan:#6fd3c7;
+    --text-primary:#edeaf5;
+    --text-muted:#9c96ae;
+    --border:#322c42;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --sans:'Inter', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-base);
+    color:var(--text-primary);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(227,176,75,0.08), transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(111,211,199,0.07), transparent 40%);
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:var(--accent-cyan); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent-gold);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+
+  /* ---------- HERO / TERMINAL ---------- */
+  .hero{
+    min-height:92vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:80px 0 60px;
+  }
+  .term{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+    overflow:hidden;
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:12px 16px;
+    background:var(--bg-panel-alt);
+    border-bottom:1px solid var(--border);
+  }
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.r{background:#e2685f;} .dot.y{background:#e3b04b;} .dot.g{background:#6fd3c7;}
+  .term-title{
+    margin-left:10px; font-family:var(--mono); font-size:12px; color:var(--text-muted);
+  }
+  .term-body{
+    font-family:var(--mono);
+    font-size:clamp(13px, 2.4vw, 17px);
+    padding:28px 26px 34px;
+    min-height:230px;
+  }
+  .term-line{margin-bottom:6px; white-space:pre-wrap; word-break:break-word;}
+  .prompt{color:var(--accent-cyan);}
+  .out{color:var(--text-primary); font-weight:600;}
+  .out-muted{color:var(--text-muted); font-weight:400;}
+  .cursor{
+    display:inline-block; width:9px; height:16px;
+    background:var(--accent-gold);
+    margin-left:2px; vertical-align:-2px;
+    animation:blink 1s steps(1) infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .hero-tagline{
+    margin-top:26px;
+    font-size:15px;
+    color:var(--text-muted);
+    font-family:var(--mono);
+  }
+  .hero-tagline span{color:var(--accent-gold);}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:64px 0; border-top:1px solid var(--border);}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--accent-gold);
+    letter-spacing:0.02em;
+    margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:"~/"; color:var(--text-muted);}
+  .eyebrow::after{
+    content:""; flex:1; height:1px; background:var(--border);
+  }
+  h2.title{
+    font-family:var(--sans);
+    font-weight:800;
+    font-size:clamp(22px, 3.4vw, 30px);
+    margin-bottom:20px;
+    letter-spacing:-0.01em;
+  }
+  .lead{color:var(--text-muted); font-size:16px; max-width:620px;}
+
+  .reveal{
+    opacity:0; transform:translateY(18px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- SKILLS ---------- */
+  .skill-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:14px;
+    margin-top:26px;
+  }
+  .skill-card{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:18px 18px 16px;
+  }
+  .skill-card h3{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--accent-cyan);
+    margin-bottom:10px;
+    font-weight:600;
+  }
+  .pill-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .pill{
+    font-family:var(--mono);
+    font-size:12.5px;
+    background:var(--bg-panel-alt);
+    border:1px solid var(--border);
+    color:var(--text-primary);
+    padding:5px 10px;
+    border-radius:5px;
+  }
+  .pill.primary{border-color:var(--accent-gold-dim); color:var(--accent-gold);}
+
+  /* ---------- PROJECTS ---------- */
+  .card{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:24px 26px;
+    margin-bottom:20px;
+  }
+  .card-head{
+    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;
+    margin-bottom:6px;
+  }
+  .card-head h3{font-size:19px; font-weight:700;}
+  .badge{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--bg-base);
+    background:var(--accent-gold);
+    padding:3px 9px;
+    border-radius:20px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .card-meta{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-bottom:14px;
+  }
+  .card ul{list-style:none;}
+  .card li{
+    position:relative;
+    padding-left:22px;
+    margin-bottom:9px;
+    color:var(--text-primary);
+    font-size:15px;
+  }
+  .card li::before{
+    content:"$";
+    position:absolute; left:0; top:0;
+    color:var(--accent-cyan);
+    font-family:var(--mono);
+    font-weight:700;
+  }
+  .card-links{margin-top:14px; font-family:var(--mono); font-size:13px;}
+  .card-links a{margin-right:16px;}
+
+  /* ---------- CREDENTIALS ---------- */
+  .log{border-left:2px solid var(--border); padding-left:22px; margin-top:24px;}
+  .log-item{position:relative; padding-bottom:26px;}
+  .log-item:last-child{padding-bottom:0;}
+  .log-item::before{
+    content:"";
+    position:absolute; left:-27px; top:4px;
+    width:11px; height:11px; border-radius:50%;
+    background:var(--accent-gold);
+    box-shadow:0 0 0 4px rgba(227,176,75,0.15);
+  }
+  .log-date{font-family:var(--mono); font-size:12px; color:var(--text-muted); margin-bottom:4px;}
+  .log-title{font-weight:700; font-size:16px; margin-bottom:4px;}
+  .log-desc{color:var(--text-muted); font-size:14.5px; max-width:600px;}
+  .log-desc a{font-family:var(--mono); font-size:13px;}
+
+  /* ---------- EDUCATION ---------- */
+  .edu-row{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px;}
+  .edu-row h3{font-size:18px; font-weight:700;}
+  .edu-meta{font-family:var(--mono); font-size:13px; color:var(--text-muted);}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{padding:70px 0 50px;}
+  .contact-term{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:26px 26px 22px;
+    font-family:var(--mono);
+    font-size:14.5px;
+  }
+  .contact-term .prompt-line{color:var(--accent-cyan); margin-bottom:14px;}
+  .contact-list{list-style:none;}
+  .contact-list li{margin-bottom:10px; display:flex; gap:10px; color:var(--text-primary);}
+  .contact-list li span.k{color:var(--text-muted); min-width:96px; display:inline-block;}
+  .footnote{
+    text-align:center; margin-top:34px;
+    font-family:var(--mono); font-size:12px; color:var(--text-muted);
+  }
+  .btn-row{margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; font-weight:600;
+    padding:10px 18px; border-radius:6px;
+    border:1px solid var(--accent-gold-dim);
+    color:var(--accent-gold);
+    background:transparent;
+    display:inline-block;
+  }
+  .btn:hover{background:rgba(227,176,75,0.1); text-decoration:none;}
+  .btn.solid{background:var(--accent-gold); color:var(--bg-base);}
+  .btn.solid:hover{background:#f0c164;}
+
+  @media (max-width:600px){
+    .hero{min-height:auto; padding:56px 0 40px;}
+    section{padding:48px 0;}
+    .term-body{padding:20px 16px 26px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1; transform:none; transition:none;}
+    .cursor{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="term">
+      <div class="term-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="term-title">visitor@internship — zsh</span>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+    <p class="hero-tagline">→ scroll down, or jump to <span>projects</span>, <span>credentials</span>, <span>contact</span></p>
+  </section>
+
+  <section id="about" class="reveal">
+    <div class="eyebrow">about</div>
+    <h2 class="title">Building with Python, learning to build with AI agents.</h2>
+    <p class="lead">
+      I'm a 2nd-year engineering student at KIIT Bhubaneswar. My main tool is Python — I use it for everything
+      from small desktop apps to experimenting with AI agent pipelines. I placed 12th out of 285 teams at a
+      GDG on Campus KIIT hackathon, and I'm Google-certified in AI fundamentals and prompt engineering.
+      I'm looking for an internship where I can work on real AI or software projects and keep leveling up.
+    </p>
+  </section>
+
+  <section id="education" class="reveal">
+    <div class="eyebrow">education</div>
+    <h2 class="title">Education</h2>
+    <div class="edu-row">
+      <h3>Kalinga Institute of Industrial Technology (KIIT), Bhubaneswar</h3>
+      <span class="edu-meta">2nd Year · B.Tech</span>
+    </div>
+  </section>
+
+  <section id="skills" class="reveal">
+    <div class="eyebrow">skills</div>
+    <h2 class="title">Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <h3>// languages</h3>
+        <div class="pill-row">
+          <span class="pill primary">Python</span>
+          <span class="pill">C</span>
+          <span class="pill">C++</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>// ai &amp; prompting</h3>
+        <div class="pill-row">
+          <span class="pill">AI tool usage</span>
+          <span class="pill">Prompt design</span>
+          <span class="pill">Responsible AI</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>// web</h3>
+        <div class="pill-row">
+          <span class="pill">HTML</span>
+          <span class="pill">CSS</span>
+          <span class="pill">JavaScript</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>// tools</h3>
+        <div class="pill-row">
+          <span class="pill">Git</span>
+          <span class="pill">GitHub</span>
+          <span class="pill">VS Code</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="reveal">
+    <div class="eyebrow">projects</div>
+    <h2 class="title">Projects</h2>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>InvoicePilot AI</h3>
+        <span class="badge">RANK 12 / 285</span>
+      </div>
+      <div class="card-meta">Team GoldOmen · "Deploy or [Redacted]" hackathon · GDG on Campus KIIT</div>
+      <ul>
+        <li>Designed an AI agent pipeline that takes an invoice document as input and produces structured data
+          extraction, a validation report, a policy-compliance check, a risk score, and a final recommendation.</li>
+        <li>Every step the agent took is logged in a full audit trail.</li>
+        <li>Worked through the complete agent-driven lifecycle: written specification → running, tested, deployed system.</li>
+        <li>Built as part of a 4-person team over the course of the hackathon.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Multi-Function Scientific Calculator</h3>
+      </div>
+      <div class="card-meta">Personal project · Python</div>
+      <ul>
+        <li>Desktop calculator with a graphical interface — arithmetic, scientific functions, matrix operations,
+          statistics, unit conversions, and equation solving.</li>
+        <li>Persistent calculation history and customizable UI themes.</li>
+        <li>Codebase split into clean, independent modules for readability and easy extension.</li>
+      </ul>
+      <div class="card-links">
+        <a href="https://github.com/priyanshu2734/calculator" target="_blank" rel="noopener">↗ view source</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="credentials" class="reveal">
+    <div class="eyebrow">credentials</div>
+    <h2 class="title">Certifications &amp; Achievements</h2>
+    <div class="log">
+      <div class="log-item">
+        <div class="log-date">MAY 2026</div>
+        <div class="log-title">Google AI Essentials Specialization — Coursera</div>
+        <div class="log-desc">
+          5-course program: Introduction to AI, Maximize Productivity With AI Tools, Discover the Art of
+          Prompting, Use AI Responsibly, Stay Ahead of the AI Curve.
+          <br><a href="https://coursera.org/verify/specialization/KI0VW5Y5CWVG" target="_blank" rel="noopener">↗ verify certificate</a>
+        </div>
+      </div>
+      <div class="log-item">
+        <div class="log-date">2026</div>
+        <div class="log-title">12th of 285 teams — GDG on Campus KIIT Hackathon</div>
+        <div class="log-desc">"Deploy or [Redacted]" — an agent-driven lifecycle hackathon, with team GoldOmen.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="reveal">
+    <div class="eyebrow">contact</div>
+    <h2 class="title">Get in touch</h2>
+    <div class="contact-term">
+      <div class="prompt-line">visitor@internship:~$ cat contact.txt</div>
+      <ul class="contact-list">
+        <li><span class="k">email</span> <a href="mailto:priyanshu.91007@gmail.com">priyanshu.91007@gmail.com</a></li>
+        <li><span class="k">phone</span> +91 72092 54563</li>
+        <li><span class="k">location</span> Bhubaneswar, Odisha, India</li>
+        <li><span class="k">github</span> <a href="https://github.com/priyanshu2734" target="_blank" rel="noopener">github.com/priyanshu2734</a></li>
+        <li><span class="k">linkedin</span> <a href="https://www.linkedin.com/in/priyanshu-sarkar-b2bb853a2/" target="_blank" rel="noopener">linkedin.com/in/priyanshu-sarkar</a></li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn solid" href="mailto:priyanshu.91007@gmail.com">Email me</a>
+        <a class="btn" href="./Priyanshu_Sarkar_Resume.pdf" target="_blank">Download résumé (PDF)</a>
+      </div>
+    </div>
+    <p class="footnote">Last updated August 2026</p>
+  </footer>
+</div>
+
+<script>
+  // ---- typing terminal effect ----
+  const lines = [
+    { prompt: "visitor@internship:~$ ", text: "whoami", type: "cmd" },
+    { text: "Priyanshu Sarkar", type: "out" },
+    { prompt: "visitor@internship:~$ ", text: "cat role.txt", type: "cmd" },
+    { text: "Aspiring AI / Software Development Intern", type: "out" },
+    { text: "2nd Year · KIIT, Bhubaneswar", type: "out-muted" },
+  ];
+  const termBody = document.getElementById('termBody');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function renderStatic(){
+    termBody.innerHTML = lines.map(l=>{
+      if(l.type==='cmd') return `<div class="term-line"><span class="prompt">${l.prompt}</span><span class="out">${l.text}</span></div>`;
+      if(l.type==='out') return `<div class="term-line out">${l.text}</div>`;
+      return `<div class="term-line out-muted">${l.text}</div>`;
+    }).join('') + '<span class="cursor"></span>';
+  }
+
+  async function typeLines(){
+    for(const l of lines){
+      const row = document.createElement('div');
+      row.className = 'term-line';
+      termBody.appendChild(row);
+      if(l.type==='cmd'){
+        const promptSpan = document.createElement('span');
+        promptSpan.className = 'prompt';
+        promptSpan.textContent = l.prompt;
+        row.appendChild(promptSpan);
+        const typed = document.createElement('span');
+        typed.className = 'out';
+        row.appendChild(typed);
+        for(const ch of l.text){
+          typed.textContent += ch;
+          await new Promise(r=>setTimeout(r, 32));
+        }
+        await new Promise(r=>setTimeout(r, 220));
+      } else {
+        row.classList.add(l.type==='out' ? 'out' : 'out-muted');
+        row.textContent = l.text;
+        await new Promise(r=>setTimeout(r, 180));
+      }
+    }
+    const cur = document.createElement('span');
+    cur.className = 'cursor';
+    termBody.appendChild(cur);
+  }
+
+  if(reduceMotion){ renderStatic(); } else { typeLines(); }
+
+  // ---- scroll reveal ----
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
