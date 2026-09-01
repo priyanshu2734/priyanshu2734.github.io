@@ -53,6 +53,12 @@
   }
   .wrap{max-width:860px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
 
+  /* ---------- GLOBAL AMBIENT RAIN (behind everything, all pages) ---------- */
+  #bgCanvas{
+    position:fixed; inset:0; width:100vw; height:100vh;
+    z-index:0; opacity:0.16; pointer-events:none;
+  }
+
   /* ---------- SCROLL PROGRESS ---------- */
   #progress{
     position:fixed; top:0; left:0; height:3px; width:0%;
@@ -167,7 +173,9 @@
     border:1px solid var(--border); background:rgba(255,255,255,0.03);
     padding:6px 12px; border-radius:20px; color:var(--text-primary);
     backdrop-filter:blur(6px);
+    transition:transform 0.2s ease, border-color 0.2s ease;
   }
+  .tag:hover{ transform:translateY(-2px); border-color:var(--accent-gold-dim); }
   .tag b{ color:var(--accent-gold); font-weight:700; }
 
   .hero-cta{
@@ -185,7 +193,19 @@
   @keyframes bounce{ 0%,100%{ transform:translateY(0); opacity:0.4;} 50%{ transform:translateY(6px); opacity:1;} }
 
   /* ---------- SECTIONS ---------- */
-  section{padding:64px 0; border-top:1px solid var(--border); position:relative;}
+  section{padding:70px 0; border-top:1px solid var(--border); position:relative; overflow:hidden;}
+  section > *{ position:relative; z-index:1; }
+  .section-num{
+    position:absolute; top:-6px; right:-6px;
+    font-family:var(--mono); font-weight:800;
+    font-size:clamp(90px, 16vw, 190px);
+    line-height:1;
+    color:transparent;
+    -webkit-text-stroke:1px rgba(227,176,75,0.12);
+    z-index:0;
+    pointer-events:none;
+    user-select:none;
+  }
   .eyebrow{
     font-family:var(--mono);
     font-size:13px;
@@ -206,12 +226,17 @@
     letter-spacing:-0.01em;
   }
   .lead{color:var(--text-muted); font-size:16px; max-width:620px;}
+  .lead .hl{ color:var(--text-primary); font-weight:600; border-bottom:1px dashed var(--accent-gold-dim); }
 
   .reveal{
     opacity:0; transform:translateY(18px);
     transition:opacity 0.6s ease, transform 0.6s ease;
   }
   .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal.in .title{ animation:titleFlicker 0.5s ease; }
+  @keyframes titleFlicker{
+    0%{ opacity:0.2; text-shadow:0 0 18px var(--accent-gold);} 40%{opacity:1; text-shadow:0 0 2px var(--accent-cyan);} 100%{ text-shadow:none; }
+  }
 
   /* ---------- SKILLS ---------- */
   .skill-grid{
@@ -228,9 +253,18 @@
     transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     transform-style:preserve-3d;
     will-change:transform;
+    position:relative;
   }
+  .skill-card::before{
+    content:""; position:absolute; inset:-1px; border-radius:9px; padding:1px;
+    background:linear-gradient(120deg, var(--accent-gold), var(--accent-pink), var(--accent-cyan));
+    opacity:0; transition:opacity 0.3s ease;
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    pointer-events:none;
+  }
+  .skill-card:hover::before{ opacity:0.9; }
   .skill-card:hover{
-    border-color:var(--accent-gold-dim);
     box-shadow:0 14px 30px -14px rgba(227,176,75,0.35);
   }
   .skill-card h3{
@@ -251,7 +285,7 @@
     border-radius:5px;
     transition:transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
-  .pill:hover{ transform:translateY(-2px); border-color:var(--accent-cyan); color:var(--accent-cyan); }
+  .pill:hover{ transform:translateY(-2px) scale(1.05); border-color:var(--accent-cyan); color:var(--accent-cyan); }
   .pill.primary{border-color:var(--accent-gold-dim); color:var(--accent-gold);}
 
   /* ---------- PROJECTS ---------- */
@@ -291,6 +325,7 @@
     color:var(--text-muted);
     margin-bottom:14px;
   }
+  .card-meta::before{ content:"$ cd ./"; color:var(--accent-gold-dim); }
   .card ul{list-style:none;}
   .card li{
     position:relative;
@@ -309,6 +344,55 @@
   .card-links{margin-top:14px; font-family:var(--mono); font-size:13px;}
   .card-links a{margin-right:16px;}
 
+  /* ---------- HACKATHONS (distinct style from projects) ---------- */
+  .hack-card{
+    background:linear-gradient(160deg, var(--bg-panel) 0%, #241b2c 100%);
+    border:1px solid var(--accent-pink);
+    border-image:linear-gradient(135deg, var(--accent-gold), var(--accent-pink), var(--accent-cyan)) 1;
+    border-radius:14px;
+    padding:30px 30px 26px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:28px;
+    align-items:start;
+    position:relative;
+    overflow:hidden;
+  }
+  .hack-card::after{
+    content:"MISSION LOG"; position:absolute; top:14px; right:-38px;
+    transform:rotate(35deg);
+    font-family:var(--mono); font-size:10px; letter-spacing:0.15em;
+    background:var(--accent-pink); color:#1a0f16; font-weight:800;
+    padding:3px 44px; opacity:0.9;
+  }
+  .hack-rank{
+    text-align:center;
+    background:var(--bg-panel-alt);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 14px;
+    min-width:110px;
+  }
+  .hack-rank .num{
+    font-family:var(--mono); font-weight:800; font-size:44px;
+    background:linear-gradient(120deg, var(--accent-gold), var(--accent-pink));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    line-height:1;
+  }
+  .hack-rank .of{ font-family:var(--mono); font-size:11px; color:var(--text-muted); margin-top:6px; }
+  .hack-body h3{ font-size:20px; font-weight:800; margin-bottom:4px; }
+  .hack-meta{ font-family:var(--mono); font-size:12.5px; color:var(--accent-cyan); margin-bottom:12px; }
+  .hack-card ul{ list-style:none; }
+  .hack-card li{ position:relative; padding-left:22px; margin-bottom:9px; font-size:15px; }
+  .hack-card li::before{ content:"▸"; position:absolute; left:0; top:0; color:var(--accent-pink); font-weight:700; }
+  .team-row{ margin-top:14px; display:flex; flex-wrap:wrap; gap:8px; }
+  .team-chip{
+    font-family:var(--mono); font-size:11.5px; padding:4px 10px; border-radius:20px;
+    background:var(--bg-panel-alt); border:1px solid var(--border); color:var(--text-muted);
+  }
+  .team-chip.me{ border-color:var(--accent-gold); color:var(--accent-gold); }
+  @media (max-width:560px){ .hack-card{ grid-template-columns:1fr; } .hack-rank{ display:inline-block; } }
+
   /* ---------- CREDENTIALS ---------- */
   .log{border-left:2px solid var(--border); padding-left:22px; margin-top:24px;}
   .log-item{position:relative; padding-bottom:26px;}
@@ -319,16 +403,32 @@
     width:11px; height:11px; border-radius:50%;
     background:var(--accent-gold);
     box-shadow:0 0 0 4px rgba(227,176,75,0.15);
+    animation:pulseDot 2.4s ease-in-out infinite;
   }
+  @keyframes pulseDot{ 0%,100%{ box-shadow:0 0 0 4px rgba(227,176,75,0.15);} 50%{ box-shadow:0 0 0 8px rgba(227,176,75,0.05);} }
   .log-date{font-family:var(--mono); font-size:12px; color:var(--text-muted); margin-bottom:4px;}
   .log-title{font-weight:700; font-size:16px; margin-bottom:4px;}
   .log-desc{color:var(--text-muted); font-size:14.5px; max-width:600px;}
   .log-desc a{font-family:var(--mono); font-size:13px;}
 
   /* ---------- EDUCATION ---------- */
-  .edu-row{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px;}
+  .edu-card{
+    background:var(--bg-panel);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:22px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .edu-card::before{
+    content:""; position:absolute; top:0; left:-100%; width:60%; height:100%;
+    background:linear-gradient(100deg, transparent, rgba(227,176,75,0.08), transparent);
+    animation:sweep 5s ease-in-out infinite;
+  }
+  @keyframes sweep{ 0%{ left:-60%; } 50%{ left:110%; } 100%{ left:110%; } }
+  .edu-row{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px; position:relative; z-index:1;}
   .edu-row h3{font-size:18px; font-weight:700;}
-  .edu-meta{font-family:var(--mono); font-size:13px; color:var(--text-muted);}
+  .edu-meta{font-family:var(--mono); font-size:13px; color:var(--accent-gold);}
 
   /* ---------- CONTACT / FOOTER ---------- */
   footer{padding:70px 0 50px;}
@@ -339,6 +439,7 @@
     padding:26px 26px 22px;
     font-family:var(--mono);
     font-size:14.5px;
+    position:relative;
   }
   .contact-term .prompt-line{color:var(--accent-cyan); margin-bottom:14px;}
   .contact-list{list-style:none;}
@@ -364,21 +465,23 @@
 
   @media (max-width:600px){
     .hero{min-height:100vh; padding:56px 0 40px;}
-    section{padding:48px 0;}
+    section{padding:52px 0;}
   }
 
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto;}
     .reveal{opacity:1; transform:none; transition:none;}
+    .reveal.in .title{ animation:none; }
     .glitch-name, .kicker, .role-line, .tag-row, .hero-cta{ opacity:1; animation:none; }
-    .orb, .scroll-cue .chevron, .type-cursor{ animation:none; }
-    #matrixCanvas{ display:none; }
+    .orb, .scroll-cue .chevron, .type-cursor, .edu-card::before, .log-item::before{ animation:none; }
+    #matrixCanvas, #bgCanvas{ display:none; }
     .card, .skill-card{ transform:none !important; }
   }
 </style>
 </head>
 <body>
 
+<canvas id="bgCanvas"></canvas>
 <div id="progress"></div>
 <div id="spotlight"></div>
 
@@ -397,7 +500,6 @@
         <span class="tag"><b>Python</b> primary</span>
         <span class="tag">Applied AI</span>
         <span class="tag">Prompt Engineering</span>
-        <span class="tag">Rank 12 / 285 hackathon</span>
       </div>
       <div class="hero-cta">
         <a class="btn solid" href="#projects">See projects ↓</a>
@@ -412,26 +514,32 @@
   </section>
 
   <section id="about" class="reveal">
+    <div class="section-num">01</div>
     <div class="eyebrow">about</div>
     <h2 class="title">Building with Python, learning to build with AI agents.</h2>
     <p class="lead">
-      I'm a 2nd-year engineering student at KIIT Bhubaneswar. My main tool is Python — I use it for everything
-      from small desktop apps to experimenting with AI agent pipelines. I placed 12th out of 285 teams at a
-      GDG on Campus KIIT hackathon, and I'm Google-certified in AI fundamentals and prompt engineering.
-      I'm looking for an internship where I can work on real AI or software projects and keep leveling up.
+      I'm a <span class="hl">2nd-year engineering student</span> at KIIT Bhubaneswar. My main tool is
+      <span class="hl">Python</span> — I use it for everything from small desktop apps to experimenting with
+      AI agent pipelines. I placed <span class="hl">12th out of 285 teams</span> at a GDG on Campus KIIT
+      hackathon, and I'm Google-certified in AI fundamentals and prompt engineering. I'm looking for an
+      internship where I can work on real AI or software projects and keep leveling up.
     </p>
   </section>
 
   <section id="education" class="reveal">
+    <div class="section-num">02</div>
     <div class="eyebrow">education</div>
     <h2 class="title">Education</h2>
-    <div class="edu-row">
-      <h3>Kalinga Institute of Industrial Technology (KIIT), Bhubaneswar</h3>
-      <span class="edu-meta">2nd Year · B.Tech</span>
+    <div class="edu-card">
+      <div class="edu-row">
+        <h3>Kalinga Institute of Industrial Technology (KIIT), Bhubaneswar</h3>
+        <span class="edu-meta">2nd Year · B.Tech</span>
+      </div>
     </div>
   </section>
 
   <section id="skills" class="reveal">
+    <div class="section-num">03</div>
     <div class="eyebrow">skills</div>
     <h2 class="title">Skills</h2>
     <div class="skill-grid">
@@ -471,29 +579,15 @@
   </section>
 
   <section id="projects" class="reveal">
+    <div class="section-num">04</div>
     <div class="eyebrow">projects</div>
     <h2 class="title">Projects</h2>
 
     <div class="card">
       <div class="card-head">
-        <h3>InvoicePilot AI</h3>
-        <span class="badge">RANK 12 / 285</span>
-      </div>
-      <div class="card-meta">Team GoldOmen · "Deploy or [Redacted]" hackathon · GDG on Campus KIIT</div>
-      <ul>
-        <li>Designed an AI agent pipeline that takes an invoice document as input and produces structured data
-          extraction, a validation report, a policy-compliance check, a risk score, and a final recommendation.</li>
-        <li>Every step the agent took is logged in a full audit trail.</li>
-        <li>Worked through the complete agent-driven lifecycle: written specification → running, tested, deployed system.</li>
-        <li>Built as part of a 4-person team over the course of the hackathon.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-head">
         <h3>Multi-Function Scientific Calculator</h3>
       </div>
-      <div class="card-meta">Personal project · Python</div>
+      <div class="card-meta">calculator — Python</div>
       <ul>
         <li>Desktop calculator with a graphical interface — arithmetic, scientific functions, matrix operations,
           statistics, unit conversions, and equation solving.</li>
@@ -506,7 +600,39 @@
     </div>
   </section>
 
+  <section id="hackathons" class="reveal">
+    <div class="section-num">05</div>
+    <div class="eyebrow">hackathons</div>
+    <h2 class="title">Hackathons</h2>
+
+    <div class="hack-card">
+      <div class="hack-rank">
+        <div class="num" data-count-to="12">0</div>
+        <div class="of">OF 285 TEAMS</div>
+      </div>
+      <div class="hack-body">
+        <h3>InvoicePilot AI</h3>
+        <div class="hack-meta">Team GoldOmen · "Deploy or [Redacted]" · GDG on Campus KIIT</div>
+        <ul>
+          <li>Designed an AI agent pipeline that takes an invoice document as input and produces structured
+            data extraction, a validation report, a policy-compliance check, a risk score, and a final
+            recommendation.</li>
+          <li>Every step the agent took is logged in a full audit trail.</li>
+          <li>Worked through the complete agent-driven lifecycle: written specification → running, tested,
+            deployed system.</li>
+        </ul>
+        <div class="team-row">
+          <span class="team-chip me">Priyanshu Sarkar</span>
+          <span class="team-chip">Vaibhav Tiwary</span>
+          <span class="team-chip">Aditya Behera</span>
+          <span class="team-chip">Kamaksha Prasad Sahu</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="credentials" class="reveal">
+    <div class="section-num">06</div>
     <div class="eyebrow">credentials</div>
     <h2 class="title">Certifications &amp; Achievements</h2>
     <div class="log">
@@ -528,6 +654,7 @@
   </section>
 
   <footer id="contact" class="reveal">
+    <div class="section-num">07</div>
     <div class="eyebrow">contact</div>
     <h2 class="title">Get in touch</h2>
     <div class="contact-term">
@@ -571,34 +698,29 @@
     document.getElementById('spotlight').style.display = 'none';
   }
 
-  /* ---------- matrix rain (hero only) ---------- */
-  if(!reduceMotion){
-    const canvas = document.getElementById('matrixCanvas');
+  /* ---------- shared rain renderer ---------- */
+  function makeRain(canvas, opts){
     const ctx = canvas.getContext('2d');
-    const heroSection = document.getElementById('heroSection');
-    const chars = "01 PY AI λ {} <> $ #".split(" ").join("").split("");
+    const chars = "01PYAIλ{}<>$#".split("");
     let cols, drops, w, h;
-
     function resize(){
-      w = canvas.width = heroSection.clientWidth;
-      h = canvas.height = heroSection.clientHeight;
-      cols = Math.floor(w / 22);
+      w = canvas.width = opts.getWidth();
+      h = canvas.height = opts.getHeight();
+      cols = Math.floor(w / opts.spacing);
       drops = new Array(cols).fill(0).map(()=> Math.random() * -50);
     }
     resize();
     window.addEventListener('resize', resize);
-
     const palette = ['#e3b04b','#6fd3c7','#e36fa0'];
     function draw(){
-      ctx.fillStyle = 'rgba(14,12,22,0.18)';
+      ctx.fillStyle = opts.fade;
       ctx.fillRect(0,0,w,h);
-      ctx.font = '15px JetBrains Mono, monospace';
+      ctx.font = opts.fontSize + 'px JetBrains Mono, monospace';
       for(let i=0;i<cols;i++){
         const ch = chars[Math.floor(Math.random()*chars.length)];
         ctx.fillStyle = palette[i % palette.length];
-        ctx.globalAlpha = 0.55;
-        ctx.fillText(ch, i*22, drops[i]*22);
-        if(drops[i]*22 > h && Math.random() > 0.975) drops[i] = 0;
+        ctx.fillText(ch, i*opts.spacing, drops[i]*opts.spacing);
+        if(drops[i]*opts.spacing > h && Math.random() > opts.resetChance) drops[i] = 0;
         drops[i]++;
       }
       requestAnimationFrame(draw);
@@ -606,7 +728,25 @@
     draw();
   }
 
-  /* ---------- glitch pulse on name, repeats occasionally ---------- */
+  if(!reduceMotion){
+    /* dense rain inside hero only */
+    const heroSection = document.getElementById('heroSection');
+    makeRain(document.getElementById('matrixCanvas'), {
+      getWidth: ()=> heroSection.clientWidth,
+      getHeight: ()=> heroSection.clientHeight,
+      spacing: 22, fontSize: 15, fade: 'rgba(14,12,22,0.18)', resetChance: 0.975
+    });
+    /* faint rain fixed behind the entire page */
+    makeRain(document.getElementById('bgCanvas'), {
+      getWidth: ()=> window.innerWidth,
+      getHeight: ()=> window.innerHeight,
+      spacing: 34, fontSize: 14, fade: 'rgba(14,12,22,0.10)', resetChance: 0.985
+    });
+  } else {
+    document.getElementById('bgCanvas').style.display = 'none';
+  }
+
+  /* ---------- glitch pulse on name ---------- */
   const glitchName = document.getElementById('glitchName');
   function pulseGlitch(){
     if(reduceMotion) return;
@@ -655,14 +795,36 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
+  /* ---------- rank count-up ---------- */
+  const rankEl = document.querySelector('[data-count-to]');
+  if(rankEl){
+    const io2 = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const target = parseInt(rankEl.getAttribute('data-count-to'), 10);
+          if(reduceMotion){ rankEl.textContent = target; io2.unobserve(rankEl); return; }
+          let cur = 0;
+          const step = ()=>{
+            cur++;
+            rankEl.textContent = cur;
+            if(cur < target) requestAnimationFrame(step);
+          };
+          step();
+          io2.unobserve(rankEl);
+        }
+      });
+    }, { threshold: 0.4 });
+    io2.observe(rankEl);
+  }
+
   /* ---------- tilt on cards ---------- */
   if(!reduceMotion && !('ontouchstart' in window)){
-    document.querySelectorAll('.card, .skill-card').forEach(el=>{
+    document.querySelectorAll('.card, .skill-card, .hack-card').forEach(el=>{
       el.addEventListener('mousemove', (e)=>{
         const r = el.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;
         const y = (e.clientY - r.top) / r.height - 0.5;
-        el.style.transform = `perspective(600px) rotateX(${(-y*6).toFixed(2)}deg) rotateY(${(x*6).toFixed(2)}deg) translateY(-2px)`;
+        el.style.transform = `perspective(700px) rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*5).toFixed(2)}deg) translateY(-2px)`;
       });
       el.addEventListener('mouseleave', ()=>{ el.style.transform = ''; });
     });
